@@ -31,18 +31,19 @@
       <!-- <img src="logo.png" alt="Logo" class="logo" /> -->
 
       <ul class="workouts">
-        <h1>Hello, <%= name %></h1>
-        <p>email: <%= email %></p>
+        <h1 class="owner-header">Hello, <%= name %></h1>
+        <p class="data">Email: <%= email %></p>
+        <p class="data">Phone: <%= phone %></p>
       </ul>
       
       <div class="request-backup">
         <% if(reqBackup.exist){ %>
-          <h1 class="req-backup-header"><%= reqBackup.header %></h1>
+          <h1 class="req-backup-header owner-header"><%= reqBackup.header %></h1>
             <% if(reqBackup.state==='investigating') { %>
-             <p>Cop name: <%= reqBackup.copName %></p>
-              <p>Cop Phone: <%= reqBackup.copPhone %></p>
-              <p>Cop Earned Ratings: <%= reqBackup.copEarnedRatings %></p>
-              <p>Cop Total Ratings: <%= reqBackup.copTotalRatings %></p>
+             <p class="data">Cop name: <%= reqBackup.copName %></p>
+              <p class="data">Cop Phone: <%= reqBackup.copPhone %></p>
+              <p class="data">Cop Earned Ratings: <%= reqBackup.copEarnedRatings %></p>
+              <p class="data">Cop Total Ratings: <%= reqBackup.copTotalRatings %></p>
               <input type="text" hidden class="copCoords" value="<%= reqBackup.copCoords %>">
             <% } %>
         <% } %>

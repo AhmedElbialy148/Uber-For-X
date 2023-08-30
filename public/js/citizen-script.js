@@ -8,6 +8,7 @@ const socket = io();
 ////////////////////////////////////////////
 // Functions
 let map;
+let myMarker;
 navigator.geolocation.getCurrentPosition(
   (position) => {
     const latitude = position.coords.latitude;
@@ -20,7 +21,7 @@ navigator.geolocation.getCurrentPosition(
       attribution:
         '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
-    L.marker(coords).addTo(map);
+    myMarker = L.marker(coords).addTo(map).bindPopup("My Location");
     // coordsInput.value = latitude + " " + longitude;
 
     // View cop icon if request is being investigating
@@ -28,7 +29,8 @@ navigator.geolocation.getCurrentPosition(
       const copCoords = requestBackupContainer
         .querySelector(".copCoords")
         .value.split(" ");
-      createPoliceIcon(+copCoords[0], +copCoords[1]);
+      let copMarker = createPoliceIcon(+copCoords[0], +copCoords[1]);
+      localStorage.setItem("cop-marker", JSON.stringify(copMarker));
     }
   },
   (err) => {
@@ -45,8 +47,9 @@ const timeInterval = setInterval(() => {
       const savedLocation = JSON.parse(localStorage.getItem("location"));
       if (coords[0] !== savedLocation[0] || coords[1] !== savedLocation[1]) {
         socketUpdateCitizenCoords(coords);
-        localStorage.removeItem("location");
-        location.reload();
+        localStorage.setItem("location", JSON.stringify(coords));
+        map.removeLayer(myMarker);
+        myMarker = L.marker(coords).addTo(map);
       }
     },
     (err) => {
@@ -58,10 +61,10 @@ const timeInterval = setInterval(() => {
 ////////////////////////////////////////////////
 // Socket.io events
 
+// Requesting help
 requestBtn.addEventListener("click", () => {
   // ["lat","long"]
   const coords = JSON.parse(localStorage.getItem("location"));
-  console.log(coords);
   if (!requestBackupContainer.querySelector("h1")) {
     const html = `<h1 class="req-backup-header">Requesting help...</h1>`;
     requestBackupContainer.insertAdjacentHTML("afterbegin", html);
@@ -73,6 +76,7 @@ requestBtn.addEventListener("click", () => {
   });
 });
 
+//  Listening to request response
 socket.on("citizen-request-updates", (data) => {
   // data= {userId:'..', copData:{}, copCoords:[]}
   const userId = document.body.getAttribute("data-userId");
@@ -80,9 +84,8 @@ socket.on("citizen-request-updates", (data) => {
   if (data.userId === userId) {
     console.log(data.copData.copId, " is on the way");
     // Viewing request backup details
-    console.log(data.copData);
     const html = `
-        <h1 class="req-backup-header">Help is on the way<h1>
+        <h1 class="req-backup-header owner-header">Help is on the way<h1>
         <p>Cop name: ${data.copData.displayName}</p>
         <p>Cop Phone: ${data.copData.phone}</p>
         <p>Cop Earned Ratings: ${data.copData.earnedRatings}</p>
@@ -91,7 +94,15 @@ socket.on("citizen-request-updates", (data) => {
     requestBackupContainer.textContent = "";
     requestBackupContainer.insertAdjacentHTML("afterbegin", html);
     //creating a cutomized police-car marker
-    createPoliceIcon(data.copCoords[0], data.copCoords[1]);
+    let copMarker = createPoliceIcon(data.copCoords[0], data.copCoords[1]);
+  }
+});
+
+//  Updating request being solved
+socket.on("citizen-solve-request", (data) => {
+  // data={solved:true}
+  if (data.solved === true) {
+    location.reload();
   }
 });
 
@@ -111,6 +122,8 @@ function createPoliceIcon(lat, long) {
   let iconOptions = {
     iconUrl: "/images/cop-icon.png",
     iconSize: [50, 50],
+    iconAnchor: [25, 50],
+    popupAnchor: [0, -45],
   };
   let customIcon = L.icon(iconOptions);
   let markerOptions = {

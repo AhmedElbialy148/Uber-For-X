@@ -15,6 +15,7 @@ router.get("/signup", authController.getSignupCitizen);
 router.post(
   "/signup/citizen",
   body("email", "Please enter a valid email.").isEmail(),
+  body("phoneNumber", "Please enter a valid phone Number.").isMobilePhone(),
   body("password", "Please enter a password with text and numbers only.")
     .trim()
     .isLength({ min: 5 })

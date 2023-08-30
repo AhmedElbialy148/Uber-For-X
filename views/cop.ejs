@@ -37,23 +37,33 @@
         </div>
       <% }) %>
     <% } %>
+    <% if(otherCops){ %>
+      <% otherCops.forEach(cop=>{ %>
+        <div class="other-cop">
+          <input hidden class="lat"  value="<%= cop.location.coordinates[0] %>"></input>
+          <input hidden class="long" value="<%= cop.location.coordinates[1] %>"></input>
+          <input hidden class="name" value="<%= cop.displayName %>"></input>
+          <input hidden class="copId" value="<%= cop.copId %>"></input>
+        </div>
+      <% }) %>
+    <% } %> 
     <div class="sidebar">
       <!-- <img src="logo.png" alt="Logo" class="logo" /> -->
 
       <ul class="workouts">
-        <h1>Hello, <%= name %></h1>
-        <p>copId: <%= copId %></p>
-        <p>email: <%= email %></p>
-        <p>phone: <%= phone %></p>
-        <p>Earned Ratings: <%= earnedRatings %></p>
-        <p>Total Ratings: <%= totalRatings %></p>
+        <h1 class="owner-header">Hello, <%= name %></h1>
+        <p class="data">copId: <%= copId %></p>
+        <p class="data">email: <%= email %></p>
+        <p class="data">phone: <%= phone %></p>
+        <p class="data">Earned Ratings: <%= earnedRatings %></p>
+        <p class="data">Total Ratings: <%= totalRatings %></p>
       </ul>
-
+      <div class="errorMessage data"></div>
       <div class="request-backup">
         <% if(reqBackup.exist){ %>
-          <h1 class="req-backup-header"><%= reqBackup.header %></h1>
-          <p>Citizen name: <%= reqBackup.citizenName %></p>
-          <p>Citizen Phone: </p>
+          <h1 class="req-backup-header owner-header"><%= reqBackup.header %></h1>
+          <p class="data">Citizen name: <%= reqBackup.citizenName %></p>
+          <p class="data">Citizen Phone: <%= reqBackup.citizenPhone %></p>
         <% } %>
       </div>
 
@@ -67,11 +77,15 @@
             >Ahmed Adel</a
           >
         </p>
+        <div class="solve-form">    
+          <% if(reqBackup.exist){ %>
+            <form method="post" action='/cop/<%= copId %>/solved'>
+              <input hidden type="text" name="requestId" value="<%= reqBackup.requestId %>">
+              <button type="submit" class="reset-btn solved-btn">Solved</button>
+            </form>
+            <% } %>
+        </div>
 
-        <form action="/citizen/help" method="post">
-          <input type="text" name="coords" class="coordsInput" hidden />
-          <button type="submit" class="reset-btn help-btn">Ok!!!</button>
-        </form>
       </div>
     </div>
 

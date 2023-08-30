@@ -4,6 +4,8 @@ const Schema = mongoose.Schema;
 const citizenSchema = new Schema({
   userName: String,
 
+  phoneNumber: Number,
+
   email: {
     type: String,
   },

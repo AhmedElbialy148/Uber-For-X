@@ -42,7 +42,25 @@ module.exports = (socket) => {
       if (!request) throw new Error("Help request was not found in DB.");
 
       const cop = await Cop.findOne({ copId: data.copId });
-      if (!request) throw new Error("Cop was not found in DB.");
+      if (!cop) throw new Error("Cop was not found in DB.");
+
+      // Check if cop is already investigating in a case
+      if (cop.copStatus === "investigating") {
+        // inform the cop
+        return io.getIO().emit("cop-request-updates", {
+          copId: cop.copId,
+          errorMessage: "Already investigating in a case.",
+        });
+      }
+
+      // Check if quest is investigated by another cop
+      if (request.reqStatus === "investigating") {
+        // inform the cop
+        return io.getIO().emit("cop-request-updates", {
+          copId: cop.copId,
+          errorMessage: `Officer 0${request.copId} is already investigating in that request.`,
+        });
+      }
       // Update cop status in DB
       cop.copStatus = "investigating";
       await cop.save();
@@ -60,8 +78,9 @@ module.exports = (socket) => {
 
       // Inform cop with citizen details
       const citizen = await Citizen.findById(request.userId);
-      if (!request) throw new Error("Citizen was not found in DB.");
+      if (!citizen) throw new Error("Citizen was not found in DB.");
       io.getIO().emit("cop-request-updates", {
+        requestId: request._id.toString(),
         copId: data.copId,
         citizenData: citizen,
       });
@@ -100,4 +119,8 @@ module.exports = (socket) => {
       console.log("My error: ", err);
     }
   });
+
+  // setInterval(() => {
+  //   io.getIO().emit('update')
+  // },2000)
 };

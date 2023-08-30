@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const Citizen = require("../models/citizen");
 const Cop = require("../models/cop");
+const bcrypt = require("bcrypt");
 
 ////////////////////////////////////////////////////////////////
 // Signup citizen/////////////////////////////////////////////
@@ -21,6 +22,7 @@ exports.postSignupCitizen = async (req, res, next) => {
     const userName = req.body.userName;
     const email = req.body.email;
     const password = req.body.password;
+    const phoneNumber = req.body.phoneNumber;
     // ["lat","long"]
     const coords = req.body.coords.split(" ");
     // 1) Check validation
@@ -38,12 +40,16 @@ exports.postSignupCitizen = async (req, res, next) => {
       return res.redirect("/signup");
     }
 
-    // 3) Create new user
+    // 3) create hashed password
+    const hashedPassword = await bcrypt.hash(password, 12);
+
+    // 4) Create new user
     const response = await Citizen.insertMany([
       {
         userName: userName,
+        phoneNumber: phoneNumber,
         email: email,
-        password: password,
+        password: hashedPassword,
         location: {
           coordinates: [+coords[0], +coords[1]],
         },
@@ -96,7 +102,8 @@ exports.postLoginCitizen = async (req, res, next) => {
     }
 
     //   3) Check right password
-    if (password !== user.password) {
+    const doMatch = bcrypt.compare(user.password, password);
+    if (!doMatch) {
       req.flash("error", "Invalid Password!");
       req.flash("status", 422);
       return res.redirect("/login");

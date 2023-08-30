@@ -18,7 +18,7 @@ exports.getCitizinPage = async (req, res, next) => {
     copPhone = "",
     copId = "",
     copEarnedRatings = "",
-    coptotalRatings = "",
+    copTotalRatings = "",
     state = "",
     copCoords = [];
 
@@ -37,12 +37,13 @@ exports.getCitizinPage = async (req, res, next) => {
       copId = cop.copId;
       copPhone = cop.phone;
       copEarnedRatings = cop.earnedRatings;
-      coptotalRatings = cop.totalRatings;
+      copTotalRatings = cop.totalRatings;
       copCoords = cop.location.coordinates.join(" ");
     }
   }
   res.render("citizen", {
     name: citizen.userName,
+    phone: citizen.phoneNumber,
     email: citizen.email,
     userId: userId,
     reqBackup: {
@@ -52,7 +53,7 @@ exports.getCitizinPage = async (req, res, next) => {
       copName: copName,
       copPhone: copPhone,
       copEarnedRatings: copEarnedRatings,
-      coptotalRatings: coptotalRatings,
+      copTotalRatings: copTotalRatings,
       copCoords: copCoords,
     },
   });
