@@ -12,19 +12,10 @@
     />
 
     <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
-      integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
-      crossorigin=""
-    />
-    <script
-      src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-      integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-      crossorigin=""
-    ></script>
+    <link rel="stylesheet" href="/Leaflet library/leaflet.css"> 
+    <script src="/Leaflet library/leaflet.js"></script>
 
-    <title>mapty // Map your workouts</title>
+    <title>Uber-For-X</title>
   </head>
   <body data-copId="<%= copId %>">
     <% if(allRequests){ %>
@@ -81,6 +72,12 @@
           <% if(reqBackup.exist){ %>
             <form method="post" action='/cop/<%= copId %>/solved'>
               <input hidden type="text" name="requestId" value="<%= reqBackup.requestId %>">
+              <input
+              hidden
+              type="text"
+              name="CSRFToken"
+              value="<%= CSRFToken %>"
+            />
               <button type="submit" class="reset-btn solved-btn">Solved</button>
             </form>
             <% } %>

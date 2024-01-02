@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Sign Up | Log In</title>
+    <link rel="stylesheet" href="/css/logging.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="title-text">
+        <div class="title login">Reset Password</div>
+      </div>
+      <div class="form-container">
+        <% if(errorMessage){ %>
+        <div class="errMsgContainer">
+          <p><%= errorMessage %></p>
+        </div>
+        <% } %>
+        <div class="form-inner reset-form">
+          <form
+            action="/reset/verification?email=<%= email %>"
+            method="post"
+            class="login"
+          >
+            <div class="field">
+              <p>Please enter the verification code sent to your email.</p>
+            </div>
+            <div class="field">
+              <input type="text" name="verifCode" placeholder="Code" required />
+            </div>
+            <input
+              hidden
+              type="text"
+              name="CSRFToken"
+              value="<%= CSRFToken %>"
+            />
+            <div class="pass-link">
+              <a href="/">Sign Up | Log In</a>
+            </div>
+
+            <div class="field btn">
+              <div class="btn-layer"></div>
+              <input type="submit" value="verify" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Load socket.io client library -->
+    <script src="/socket.io/socket.io.js"></script>
+
+    <!-- Load Axios from a CDN -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </body>
+</html>

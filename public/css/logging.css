@@ -12,7 +12,8 @@ body {
   height: 100%;
   width: 100%;
   place-items: center;
-  background: -webkit-linear-gradient(left, #9896f0, #fbc8d5);
+  /* background: -webkit-linear-gradient(left, #9896f0, #fbc8d5); */
+  background: -webkit-linear-gradient(left, #3b38a1, #9b344e);
 }
 ::selection {
   background: #12e8f0;
@@ -123,6 +124,7 @@ input[type="radio"] {
   display: flex;
   width: 300%;
 }
+
 .form-container .form-inner form {
   width: 50%;
   transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
@@ -169,6 +171,9 @@ form .field input:focus::placeholder {
 .form-inner form .signup-link a:hover {
   text-decoration: underline;
 }
+.form-container .reset-form {
+  width: 200%;
+}
 form .btn {
   height: 50px;
   width: 100%;
@@ -207,4 +212,11 @@ form .btn input[type="submit"] {
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
+}
+
+.error-title {
+  margin-bottom: 2rem;
+}
+.error-page-msg {
+  margin-bottom: 1rem;
 }

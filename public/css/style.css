@@ -265,3 +265,6 @@ a:visited {
 img.temp {
   filter: hue-rotate(red);
 }
+.error-backup {
+  color: red;
+}

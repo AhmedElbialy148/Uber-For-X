@@ -18,7 +18,6 @@ exports.getCopPage = async (req, res, next) => {
       { copId: { $ne: copId } },
       { displayName: 1, "location.coordinates": 1, copId: 1, _id: 0 }
     );
-    // console.log(otherCops);
 
     let exist = false,
       header = "",
@@ -54,7 +53,9 @@ exports.getCopPage = async (req, res, next) => {
       },
     });
   } catch (err) {
-    console.log("My error: ", err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   }
 };
 
@@ -88,6 +89,8 @@ exports.postSolvedReq = async (req, res, next) => {
     });
     return res.redirect(`/cop/${copId}`);
   } catch (err) {
-    console.log("My error: ", err);
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
   }
 };

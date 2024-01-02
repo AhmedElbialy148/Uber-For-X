@@ -45,7 +45,31 @@ router.post(
 
 //////////////////////////////////////////////////////////////
 // Reset Citizen ////////////////////////////////////////////
+router.get("/reset", authController.getResetPage);
+router.get("/reset/verification", authController.getResetVerifPage);
+router.get("/reset/newPassword", authController.getResetNewPassword);
 
+router.post(
+  "/reset",
+  body("email", "Please enter a valid email.").isEmail(),
+  authController.postResetEmail
+);
+
+router.post("/reset/verification", authController.postResetVerification);
+router.post(
+  "/reset/newPassword",
+  body("newPassword", "Please enter a password with text and numbers only.")
+    .trim()
+    .isLength({ min: 5 })
+    .isAlphanumeric(),
+  body("confirmNewPassword").custom((value, { req }) => {
+    if (value !== req.body.newPassword) {
+      throw new Error("Passwords have to match.");
+    }
+    return true;
+  }),
+  authController.postResetNewPass
+);
 //////////////////////////////////////////////////////////////
 // Login Cop ////////////////////////////////////////////
 router.get("/login/cop", authController.getLoginCop);

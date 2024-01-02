@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta http-equiv="Content-Security-Policy" content="default-src *;
+   img-src * 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' *;
+   style-src  'self' 'unsafe-inline' *">
     <link rel="shortcut icon" type="image/png" href="/images/icon.png" />
 
     <link
@@ -12,23 +15,22 @@
     />
 
     <link rel="stylesheet" href="/css/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css"
-      integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14="
-      crossorigin=""
-    />
-    <script
-      src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js"
-      integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg="
-      crossorigin=""
-    ></script>
 
-    <title>mapty // Map your workouts</title>
+    <link rel="stylesheet" href="/Leaflet library/leaflet.css"> 
+     <script src="/Leaflet library/leaflet.js"></script>
+
+    <!-- Load socket.io client library -->
+    <script  src="/socket.io/socket.io.js"></script>
+  
+    <!-- Load Axios from a CDN -->
+    <!-- <script src="https://unpkg.com/axios/dist/axios.min.js"></script> -->
+  
+    <script defer src="/js/citizen-script.js"></script>
+
+    <title>Uber-For-X</title>
   </head>
   <body data-userId= "<%= userId %>"">
     <div class="sidebar">
-      <!-- <img src="logo.png" alt="Logo" class="logo" /> -->
 
       <ul class="workouts">
         <h1 class="owner-header">Hello, <%= name %></h1>
@@ -59,20 +61,11 @@
           >
         </p>
 
-        <!-- <form action="/citizen/help" method="post"> -->
-        <!-- <input type="text" class="coordsInput" hidden /> -->
         <button class="reset-btn request-btn">Request for help!</button>
-        <!-- </form> -->
+
       </div>
     </div>
 
     <div id="map"></div>
   </body>
-  <!-- Load socket.io client library -->
-  <script src="/socket.io/socket.io.js"></script>
-
-  <!-- Load Axios from a CDN -->
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-
-  <script src="/js/citizen-script.js"></script>
 </html>
