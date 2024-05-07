@@ -11,11 +11,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "2.4.3",
+    "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",
     "connect-flash": "^0.1.1",
-    "connect-mongodb-session": "^3.1.1",
+    "connect-mongodb-session": "^2.2.0",
     "cookie-parser": "^1.4.6",
     "crypto": "^1.0.1",
     "csrf-sync": "^4.0.1",
